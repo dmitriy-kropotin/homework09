@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cpuload() {
-nohup dd if=/dev/zero iflag=fullblock bs=500MiB count=2|nice -n $1 bzip2 -9 > /dev/null;
+dd if=/dev/zero iflag=fullblock bs=500MiB count=2|nice -n $1 bzip2 -9 > /dev/null;
 
 }
 
@@ -11,7 +11,7 @@ echo "CPU count - "$cpucount
 echo "Enter NICEs for created processes, on one line, separated by spaces"
 echo "Example: -20 -10 0 10 20"
 echo "Quantity more than CPU count"
-read pris
+read -e -p "NICEs : " pris
 
 #pris="20 20 10 0 -10 -10 -20 -20";
 i=-1;
@@ -29,6 +29,7 @@ for pri in $pris
 	done
 
 trap "kill $PID_LIST" SIGINT;
+sleep 0.1;
 echo "Parallel processes have started";
 
 pidchs=$PID_LIST
